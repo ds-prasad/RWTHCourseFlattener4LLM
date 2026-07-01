@@ -1,9 +1,10 @@
 ## RWTHCourseFlattener4LLM
 
-A small PowerShell utility that turns a downloaded, deeply-nested university
-course archive into a **single flat folder of files with context-rich names** which are
-ready to drop into any **LLM-based study & tutoring tool** (Claude Projects,
-NotebookLM, ChatGPT, and similar) that accepts individual files but not folders.
+A small PowerShell / Python utility that turns a downloaded, deeply-nested
+university course archive into a **single flat folder of files with context-rich
+names** which are ready to drop into any **LLM-based study & tutoring tool**
+(Claude Projects, NotebookLM, ChatGPT, and similar) that accepts individual files
+but not folders.
 
 ---
 
@@ -51,13 +52,24 @@ DLSD_01_Lecture_1_Lecture-1-Introduction-Markov-decision-process_RLLBC-SS26-Lect
 
 3. Drop **`RWTHCourseFlattener4LLM.ps1`** inside it.
 
-4. Run it from a terminal in that folder:
+4. Run it from a terminal in that folder. There are **two equivalent variants** are
+   provided, pick whichever you prefer:
+   
+   **PowerShell** (Windows, no install needed):
    
    ```powershell
    powershell -ExecutionPolicy Bypass -File ".\RWTHCourseFlattener4LLM.ps1"
    ```
    
    (or right-click the script → *Run with PowerShell*)
+   
+   **Python 3** (cross-platform, standard library only, no `pip install` required):
+   
+   ```bash
+   python RWTHCourseFlattener4LLM.py
+   ```
+   
+   Options: `--course DLSD`, `--no-extract`, `--skip-zip`, `--dest-name NAME`.
 
 5. When prompted, enter a short **course name** (max 7 letters), e.g. `DLSD`.
 
@@ -135,12 +147,13 @@ NotebookLM notebook, ChatGPT, …) and start studying.
   redo it, delete the `<Course>_Flat/` folder first, then run again.
 - **No recursive decompression.** If the course archive contains *nested* `.zip`
   files (a zip inside the zip), those inner archives are **not** extracted; they
-  are copied as-is (or skipped with `-SkipZip`). You'd need to unzip them
-  manually and re-run.
-- **Windows / PowerShell only.** Uses `Expand-Archive`, so it targets Windows
-  PowerShell 5.1+. Only `.zip` archives are supported (not `.rar`/`.7z`).
-- **`Read-Host` prompt.** The course-name prompt requires an interactive
-  terminal. In non-interactive contexts, pass `-Course` instead.
+  are copied as-is (or skipped with `-SkipZip` / `--skip-zip`). You'd need to
+  unzip them manually and re-run.
+- **`.zip` archives only** (not `.rar`/`.7z`). The PowerShell variant needs
+  Windows PowerShell 5.1+; the Python variant needs Python 3.6+ (standard library
+  only) and runs on Windows, macOS, and Linux.
+- **Interactive prompt.** The course-name prompt needs an interactive terminal.
+  In non-interactive contexts, pass `-Course` (PowerShell) / `--course` (Python).
 - **Pre-existing extracted folders aren't cleaned.** By design the cleanup only
   touches what the script extracted this run; if you already had unpacked folders
   next to the zip, remove those manually.
